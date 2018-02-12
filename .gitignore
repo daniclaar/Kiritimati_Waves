@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rprofile
+packrat/lib*/
+packrat/src/
+NetCDF/*
+website/nc/*
+grib/
