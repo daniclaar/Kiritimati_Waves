@@ -1,3 +1,4 @@
+# Load necessary libraries
 library(RcppCNPy)
 library(MASS)
 library(fitdistrplus)
@@ -5,26 +6,20 @@ library('extRemes')
 library(ggplot2)
 library(extraDistr)
 
-cols = c("#440154", "#46327E", "#365C8D", "#277F8E", "#1FA187", "#4AC16D", "#A0DA39", "#FDE725")
+# Clear working environment
+rm(list=ls())
+
+cols = c("#440154", "#472473", "#414487", "#355F8D", "#2A788E", "#21918C", "#22A884", "#44BF70", "#7AD151", "#BDDF26", "#FDE725")
 
 
-hs_all <- npyLoad("hs_all_0360.npy")
-hs_all <- hs_all[4:37894]
+hs_all <- npyLoad("hs_all_0360.npy") # Load in significant wave height data
+hs_all <- hs_all[30:37894] # Remove first values, as they look suspiciously like model initialization
 hs_all_df <- as.data.frame(hs_all)
 
 hist(hs_all)
 plot(density(hs_all))
-f<-fitdistr(hs_all, 'lognormal')
-
-
 plot(ecdf(hs_all))
-
-# ks.test(hs_all,'rlnorm')
-# ks.test(hs_all,'plnorm')
-# ks.test(hs_all,'gamma')
-# ks.test(hs_all,'pweibull',shape=2)
-
-descdist(hs_all, discrete=FALSE)
+descdist(hs_all, discrete=FALSE, boot=1000)
 
 fit.gamma <- fitdist(hs_all,'gamma')
 plot(fit.gamma)
@@ -45,25 +40,13 @@ cdfcomp(list(fit.gamma, fit.lnorm, fit.weibull), legendtext = plot.legend)
 ppcomp(list(fit.gamma, fit.lnorm, fit.weibull), legendtext = plot.legend)
 
 plotdist(hs_all, histo = TRUE, demp = TRUE)
-descdist(hs_all, discrete=FALSE, boot=1000)
 
 fit.fevd.GEV <- fevd(hs_all,type="GEV",time.units = "2922/year",span=13)
 plot(fit.fevd.GEV)
-fit.fevd.Gumbel <- fevd(hs_all,type="Gumbel")
-plot(fit.fevd.Gumbel)
-# fit.fevd.Exp <- fevd(data=hs_all_df,x=hs_all,type="Exponential")
+# fit.fevd.Gumbel <- fevd(hs_all,type="Gumbel")
 # plot(fit.fevd.Gumbel)
-# colnames(hs_all_df)
-# fit.fevd.Exp <- fevd(mylist,hs_all,type="Exponential")
 
 ci(fit.fevd.GEV)
-
-# quantile(fit.lnorm)
-# quantile(fit.lnorm,probs = c(0.666,0.75,0.9,0.95,0.98,0.99,0.999,0.9999))
-
-# The waves in January 2015 were 2.52m, which is >98% of waves during the past 12 years.
-
-hist(hs_all,breaks = 30)
 
 hs_all_df$group <- hs_all
 hs_all_df$group[hs_all_df$group<=1] <- "a"
@@ -73,7 +56,10 @@ hs_all_df$group[which(hs_all_df$group<=1.8 & hs_all_df$group>1.5)] <- "d"
 hs_all_df$group[which(hs_all_df$group<=2 & hs_all_df$group>1.8)] <- "e"
 hs_all_df$group[which(hs_all_df$group<=2.2 & hs_all_df$group>2)] <- "f"
 hs_all_df$group[which(hs_all_df$group<=2.5 & hs_all_df$group>2.2)] <- "g"
-hs_all_df$group[which(hs_all_df$group<=4 & hs_all_df$group>2.5)] <- "h"
+hs_all_df$group[which(hs_all_df$group<=2.8 & hs_all_df$group>2.5)] <- "h"
+hs_all_df$group[which(hs_all_df$group<=3 & hs_all_df$group>2.8)] <- "i"
+hs_all_df$group[which(hs_all_df$group<=3.2 & hs_all_df$group>3)] <- "j"
+hs_all_df$group[which(hs_all_df$group<=4 & hs_all_df$group>3.2)] <- "k"
 hs_all_df$group <- as.factor(hs_all_df$group)
 
 
@@ -91,11 +77,3 @@ g1
 jpeg(filename = "wave_hist.jpg",height = 4.5,width=7, units="in",res=300)
 g1
 dev.off()
-
-
-
-fit.rayleigh <- fitdist(hs_all,'rayleigh',start=list(sigma=1))
-plot(fit.rayleigh)
-
-f <- fitdist(hs+theta,'weibull')
-
