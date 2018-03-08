@@ -67,7 +67,7 @@ hs_all_df$group <- as.factor(hs_all_df$group)
 g1 <- ggplot(data=hs_all_df) + 
   theme_classic()+
   geom_histogram(aes(x=hs_all,fill=group,color="black"),show.legend = F,binwidth=0.01,size=0.01) +
-  #geom_vline(xintercept = 2.74, linetype="dashed")+
+  geom_vline(xintercept = 2.94, linetype="dashed")+
   scale_fill_manual(values=cols) +
   scale_x_continuous(expand=c(0,0),name = "Significant Wave Height (m)",limits = c(0,4)) +
   scale_y_continuous(expand=c(0,0), name = "Count") + 
