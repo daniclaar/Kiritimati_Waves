@@ -8,3 +8,4 @@ packrat/src/
 NetCDF/*
 website/nc/*
 grib/
+.ipynb_checkpoints/*
