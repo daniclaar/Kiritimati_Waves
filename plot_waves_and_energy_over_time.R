@@ -24,6 +24,7 @@ waves <- cbind(waves2,time)
 # Calculate wave energy (rough calculation) and plot
 waves$we_all <- (((waves$hs_all)^2)*waves$tp_all)/2
 hist(waves$we_all)
+npySave('we_all.npy',waves$we_all)
 
 g2 <- ggplot(data=waves) +
   geom_point(aes(x=time, y=we_all,color=dp_all),alpha=0.1)+

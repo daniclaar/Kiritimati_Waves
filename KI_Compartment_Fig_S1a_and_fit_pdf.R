@@ -46,6 +46,12 @@ plot(fit.fevd.GEV)
 # fit.fevd.Gumbel <- fevd(hs_all,type="Gumbel")
 # plot(fit.fevd.Gumbel)
 
+# x <- 2:4
+# devd.GEV <- devd(x, loc = 1.7837346, scale = 0.3451910, shape = -0.1509318, threshold = 0, log = FALSE,type = c("GEV"))
+# pevd.GEV <- pevd(x, loc = 1.7837346, scale = 0.3451910, shape = -0.1509318, threshold = 0, log = FALSE,type = c("GEV"))
+# 
+# plot(pevd.GEV)
+
 ci(fit.fevd.GEV)
 
 hs_all_df$group <- hs_all
@@ -66,7 +72,8 @@ hs_all_df$group <- as.factor(hs_all_df$group)
 
 g1 <- ggplot(data=hs_all_df) + 
   theme_classic()+
-  geom_histogram(aes(x=hs_all,fill=group,color="black"),show.legend = F,binwidth=0.01,size=0.01) +
+  theme(text=element_text(size=22))+
+  geom_histogram(aes(x=hs_all,fill=group,color="black"),show.legend = F,binwidth=0.1,size=0.1) +
   geom_vline(xintercept = 2.94, linetype="dashed")+
   scale_fill_manual(values=cols) +
   scale_x_continuous(expand=c(0,0),name = "Significant Wave Height (m)",limits = c(0,4)) +
@@ -74,6 +81,10 @@ g1 <- ggplot(data=hs_all_df) +
   scale_color_manual(values="#565656")
 g1
 
-jpeg(filename = "wave_hist.jpg",height = 4.5,width=7, units="in",res=300)
+jpeg(filename = "KI_Compartment_Fig_S1a_wave_hist.jpg",height = 4.5,width=7, units="in",res=300)
+g1
+dev.off()
+
+pdf(file = "KI_Compartment_Fig_S1a_wave_hist.pdf",height = 4.5,width=7)
 g1
 dev.off()

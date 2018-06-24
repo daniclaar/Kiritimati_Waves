@@ -1,0 +1,13 @@
+wget -c -t 999 ftp://polar.ncep.noaa.gov/pub/history/waves/nww3/nww3.*.grb
+
+wget -c -t 999 ftp://polar.ncep.noaa.gov/pub/history/waves/multi1_/2*/gribs/multi_1.glo_30m.*.grb
+
+#!/bin/bash
+urlbeg='ftp://polar.ncep.noa.gov/pub/history/waves/multi_1/'
+urlend='/gribs/multi_1.glo_30m.*.grb2'
+for i in {2005..2017}; do
+	for j in {01..12}; do
+		mydat=$i$j
+		echo $urlbeg$mydat$urlend
+	done
+done
